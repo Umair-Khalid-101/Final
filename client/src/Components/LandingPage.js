@@ -3,7 +3,7 @@ import CampaignCard from "./CampaignCard";
 import Navbar from "./Navbar";
 import medical from "../images/medical.jpg";
 import landingpageimage from "../images/landingpage.jpg";
-import { Navigate, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 export default function LandingPage() {
   const navigate = useNavigate();
   return (
@@ -36,9 +36,9 @@ export default function LandingPage() {
               }}
             >
               <button
-                classNameName="btn"
+                className="btn"
                 style={{ color: "white", fontWeight: "bold" }}
-                onClick={() => navigate("/NewCampaign")}
+                onClick={() => navigate("/login")}
               >
                 Create Campaign
               </button>

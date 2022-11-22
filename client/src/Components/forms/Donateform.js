@@ -1,13 +1,48 @@
-import React from "react";
+import React, { useState } from "react";
+import { ethers } from "ethers";
 import { useForm } from "react-hook-form";
-import { Link } from "react-router-dom";
-export default function Donateform() {
+export default function Donateform({ walletAddress }) {
+  const [txs, setTxs] = useState([]);
+
+  const startPayment = async ({ setTxs, ether, addr }) => {
+    try {
+      if (!window.ethereum)
+        throw new Error("No crypto wallet found. Please install it.");
+
+      await window.ethereum.send("eth_requestAccounts");
+      const provider = new ethers.providers.Web3Provider(window.ethereum);
+      const signer = provider.getSigner();
+      ethers.utils.getAddress(addr);
+      const tx = await signer.sendTransaction({
+        to: addr,
+        value: ethers.utils.parseEther(ether),
+      });
+      console.log({ ether, addr });
+      console.log("tx", tx);
+      setTxs([tx]);
+    } catch (err) {
+      console.log("Error: ", err);
+    }
+  };
+
+  console.log("WA:", walletAddress);
+  const value = {
+    To: walletAddress,
+  };
   const {
     register,
     formState: { errors },
     handleSubmit,
-  } = useForm();
-  const onSubmit = (data) => console.log(data);
+  } = useForm({
+    defaultValues: value,
+  });
+  const onSubmit = async (data) => {
+    await startPayment({
+      setTxs,
+      ether: data.Amount,
+      addr: data.To,
+    });
+  };
   return (
     <div>
       <div
@@ -26,7 +61,7 @@ export default function Donateform() {
               </label>
               <input
                 type="text"
-                class="text form-control border border-2 "
+                class="text form-control border "
                 style={{ borderRadius: "50px" }}
                 {...register("To", { required: "true" })}
               />
@@ -36,7 +71,7 @@ export default function Donateform() {
                 ) : null}
               </p>
             </div>
-            <div class="mb-3">
+            {/* <div class="mb-3">
               <label
                 class="form-label"
                 style={{ color: "#242F9B", fontWeight: "bold" }}
@@ -45,7 +80,7 @@ export default function Donateform() {
               </label>
               <input
                 type="text"
-                class="form-control border border-2"
+                class="form-control border"
                 style={{ borderRadius: "50px" }}
                 {...register("From", { required: "true" })}
               />
@@ -54,7 +89,7 @@ export default function Donateform() {
                   <p style={{ color: "red" }}>This field is required</p>
                 ) : null}
               </p>
-            </div>
+            </div> */}
             <div class="mb-3">
               <label
                 class="form-label"
@@ -64,7 +99,7 @@ export default function Donateform() {
               </label>
               <input
                 type="text"
-                class="form-control border border-2"
+                class="form-control border"
                 style={{ borderRadius: "50px" }}
                 {...register("Amount", { required: "true" })}
               />

@@ -7,9 +7,9 @@ import SignIn from "./Components/SignIn";
 import LandingPage from "./Components/LandingPage";
 import HowitWorks from "./Components/HowitWorks";
 import Categories from "./Components/Categories";
-
 import DonatedSuccessfully from "./Components/DonatedSuccessfully";
 import CampaignStarted from "./Components/CampaignStarted";
+import CampaignDetails from "./Components/CampaignDetails/CampaignDetails";
 
 // Protected Routes
 import RequireAuth from "./Components/RequireAuth";
@@ -54,6 +54,14 @@ function App() {
             </RequireAuth>
           }
         />
+        <Route
+          path="/CampaignDetails/:id"
+          element={
+            <RequireAuth>
+              <CampaignDetails />
+            </RequireAuth>
+          }
+        />
         <Route path="/login" element={<SignIn />} />
         <Route path="/SignUp" element={<SignUp />} />
         <Route
@@ -65,7 +73,7 @@ function App() {
           }
         />
         <Route
-          path="/Donate"
+          path="/Donate/:wa"
           element={
             <RequireAuth>
               <Donate />

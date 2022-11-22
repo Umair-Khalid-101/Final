@@ -12,8 +12,10 @@ import FavoriteBorder from "@mui/icons-material/FavoriteBorder";
 import { Button, Checkbox, Grid } from "@mui/material";
 import Favorite from "@mui/icons-material/Favorite";
 import FavButton from "../Buttons/FavButton";
+import { useNavigate } from "react-router-dom";
 
 export default function AllCampaignsCard({ posts }) {
+  const navigate = useNavigate();
   return (
     <Card sx={{ maxWidth: 340 }}>
       <CardHeader
@@ -60,6 +62,7 @@ export default function AllCampaignsCard({ posts }) {
                 borderRadius: "50px",
                 width: "110%",
               }}
+              onClick={() => navigate(`/CampaignDetails/${posts._id}`)}
             >
               Read More
             </Button>
